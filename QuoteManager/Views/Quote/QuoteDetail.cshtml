@@ -1,0 +1,76 @@
+﻿@model QuoteManager.Models.ViewModel.Quote.QuoteViewModel
+    @using (Html.BeginForm("QuoteNew", "Quote", FormMethod.Post))
+    { 
+    <table class="quote-table">
+        <tr>
+            <th colspan="2">@(Html.LabelFor(m => m.customerId))</th>
+            <th>@(Html.LabelFor(m => m.customerId))@(Html.LabelFor(m => m.geo))</th>
+        </tr>
+        <tr>
+            <td colspan="2">
+                @(Html.Kendo().DropDownListFor(m => m.customerId)
+            .HtmlAttributes(new { style = "width:500px" })
+            .BindTo(Model.CustomerList)
+            .Value(Model.customerId.ToString())
+                )
+            </td>
+            <td>@(Html.Kendo().TextBoxFor(m => m.customerId).HtmlAttributes(new { style = "width:150px" }))@(Html.Kendo().TextBoxFor(m => m.geo).HtmlAttributes(new { style = "width:150px" }))</td>
+        </tr>
+        <tr>
+            <th>@(Html.LabelFor(m => m.name))</th>
+            <th>@(Html.LabelFor(m => m.owner))</th>
+            <th>@(Html.LabelFor(m => m.c2cId))</th>
+        </tr>
+        <tr>
+            <td>
+            @(Html.Kendo().TextBoxFor(m => m.name).HtmlAttributes(new { style = "width:250px" }))
+            @(Html.ValidationMessageFor(m => m.name))
+            </td>
+            <td>@(Html.Kendo().TextBoxFor(m => m.owner).HtmlAttributes(new { style = "width:250px" }).Enable(false))</td>
+            <td>@(Html.Kendo().TextBoxFor(m => m.c2cId).HtmlAttributes(new { style = "width:250px" }))</td>
+        </tr>
+        <tr>
+            <th>@(Html.LabelFor(m => m.contactFirstName))</th>
+            <th>@(Html.LabelFor(m => m.contactLastName))</th>
+            <th>@(Html.LabelFor(m => m.currencyId))</th>
+        </tr>
+        <tr>
+            <td>@(Html.Kendo().TextBoxFor(m => m.contactFirstName).HtmlAttributes(new { style = "width:250px" }))</td>
+            <td>@(Html.Kendo().TextBoxFor(m => m.contactLastName).HtmlAttributes(new { style = "width:250px" }))</td>
+            <td>@(Html.Kendo().TextBoxFor(m => m.modifiedDate).HtmlAttributes(new { style = "width:250px" }))</td>
+        </tr>
+        <tr>
+            <th>@(Html.LabelFor(m => m.quoteTypeId))</th>
+            <th>@(Html.LabelFor(m => m.quoteStatusId))</th>
+            <th>@(Html.LabelFor(m => m.firmQuote))</th>
+        </tr>
+        <tr>
+            <td>
+                @(Html.Kendo().DropDownListFor(m => m.quoteTypeId)
+            .HtmlAttributes(new { style = "width:250px" })
+            .BindTo(Model.QuoteTypeList)
+            .Value(Model.quoteTypeId.ToString())
+                )
+            </td>
+            <td>@(Html.Kendo().TextBoxFor(m => m.quoteStatusId).HtmlAttributes(new { style = "width:250px" }))</td>
+            <td>@(Html.Kendo().CheckBoxFor(m => m.firmQuote))</td>
+        </tr>
+        <tr>
+            <th>@(Html.LabelFor(m => m.createdDate))</th>
+            <th>@(Html.LabelFor(m => m.modifiedDate))</th>
+            <th>@(Html.LabelFor(m => m.validityDate))</th>
+        </tr>
+        <tr>
+            <td>@(Html.Kendo().TextBoxFor(m => m.createdDate).HtmlAttributes(new { style = "width:250px" }))</td>
+            <td>@(Html.Kendo().TextBoxFor(m => m.modifiedDate).HtmlAttributes(new { style = "width:250px" }))</td>
+            <td>@(Html.Kendo().DatePickerFor(m => m.validityDate).HtmlAttributes(new { style = "width:250px" }))</td>
+        </tr>
+        <tr>
+            <td colspan="3"></td>
+        </tr>
+    </table>
+      <div>
+          <button class="k-button" type="submit">Create New Quote</button>
+      </div>
+    }
+

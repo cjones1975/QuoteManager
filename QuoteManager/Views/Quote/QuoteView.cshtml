@@ -1,0 +1,131 @@
+﻿
+@(Html.Hidden("selectedFolderId", ViewData["SelectedFolderId"]))
+@(Html.Hidden("selectedQuoteId", ViewData["SelectedQuoteId"]))
+@(Html.Hidden("selectedQuotePage", ViewData["SelectedQuotePage"]))
+<div class="container" id="SECTION_FOLDERS">
+    @{Html.RenderPartial("FolderList");}
+</div>
+<div class="container" style="padding-top:15px">
+    @(Html.Kendo().Menu()
+      .Name("QuoteMenu")
+      .Items(items =>
+      {
+          items.Add()
+               .Text("Quote Actions")
+               .Items(children =>
+               {
+                   children.Add().Text("<span class=\"glyphicon glyphicon-plus-sign\"></span> Create Quote").Encoded(false).HtmlAttributes(new { @id = "ADDQUOTE" });
+                   children.Add().Text("<span class=\"glyphicon glyphicon-edit\"></span> Edit Quote").Encoded(false).HtmlAttributes(new { @id = "EDITQUOTE" });
+                   children.Add().Text("<span class=\"glyphicon glyphicon-minus-sign\"></span> Delete Quote").Encoded(false).HtmlAttributes(new { @id = "DELETEQUOTE" });
+                   children.Add().Text("<span class=\"glyphicon glyphicon-duplicate\"></span> Duplicate Quote").Encoded(false).HtmlAttributes(new { @id = "DUPLICATEQUOTE" });
+                   children.Add().Text("<span class=\"glyphicon glyphicon-hand-right\"></span> Reassign Quote").Encoded(false).HtmlAttributes(new { @id = "REASSIGNQUOTE" });
+               });
+          items.Add().Text("Total Contract Value").HtmlAttributes(new { @id = "TOTALCONTRACTVALUE" });
+      })
+             .Events(e => e.Select("onQuoteMenu_Select"))
+    )
+</div>
+<div class="container" style="padding-top:5px">
+        @(Html.Kendo().Grid<QuoteManager.Models.ViewModel.Quote.QuoteViewModel>()
+            .Name("QuoteGrid")
+            .HtmlAttributes(new { style = "Height: 200px" })                 
+            .Columns(columns =>
+            {
+                columns.Bound(c => c.quoteId).Hidden();
+                columns.Bound(c => c.name).Width("120px");
+                columns.Bound(c => c.customer).Width("220px");
+                columns.Bound(c => c.quoteType).Width("100px");
+                columns.Bound(c => c.quoteStatus).Width("100px");
+                columns.Bound(c => c.createdDate).Format("{0:dd.MM.yyyy}").Width("80px");
+                columns.Bound(c => c.modifiedDate).Format("{0:dd.MM.yyyy}").Width("80px");
+
+            })
+            .Scrollable()
+            .Sortable()
+            .Filterable(filterable => filterable.Extra(false))
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable(pageable =>
+                { 
+                pageable.Refresh(true);
+                pageable.PageSizes(true);
+                pageable.ButtonCount(5);
+                pageable.Messages(messages => messages.Empty("No quotes to display").Display("Total number of quotes: {2}"));
+                    })
+            .AutoBind(false)
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize((int)ViewData["QuotePageSize"])
+                .Read(read => read.Action("QuoteByUser_Read", "Quote").Data("getFolderId")))
+                .Events(e =>
+                {
+                    e.Change("onQuoteGrid_Change").DataBound("onQuoteGrid_DataBound");
+                })
+        )
+</div>
+<div class="container" style="padding-top:10px">
+    <p></p>
+    <div class="view-title">
+        <label id="QuoteName" />
+    </div>
+    @(Html.Kendo()
+      .Menu()
+      .Name("Product_Menu")
+      .Items(items =>
+      {
+          items.Add()
+               .Text("Product Actions")
+               .HtmlAttributes(new { @id = "PRODUCTACTIONS" })
+               .Items(children =>
+               {
+                   children.Add().Text("<span class=\"glyphicon glyphicon-plus-sign\"></span> Add Product").Encoded(false).HtmlAttributes(new { @id = "ADDPRODUCT" });
+                   children.Add().Text("<span class=\"glyphicon glyphicon-minus-sign\"></span> Delete Product").Encoded(false).HtmlAttributes(new { @id = "DELETEPRODUCT" });
+               });
+      })
+      .Events(e => e.Select("onProductMenu_Select"))
+    )
+</div>
+<div class="container" style="padding-top:5px">
+    @(Html.Kendo()
+      .Grid<QuoteManager.Models.ViewModel.Quote.QuoteProductsViewModel>()
+      .Name("ProductGrid")
+      .HtmlAttributes(new { style = "Height: 150px" })
+      .Columns(columns =>
+      {
+          columns.Bound(c => c.assignedProductId).Hidden();
+          columns.Bound(c => c.name).Width("300px");
+          columns.Bound(c => c.controller)
+                .ClientTemplate("<input type='button' value='Configure Product' onClick='onOpen_Product()' class='k-button' />")
+                 .Title("")
+                 .Width(120);
+      })
+      .Sortable()
+      .Scrollable()
+      .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+             .Pageable(pageable =>
+                        {
+                            pageable.Refresh(true);
+                            pageable.PageSizes(true);
+                            pageable.ButtonCount(5);
+                            pageable.Messages(messages => messages.Empty("No products to display").Display("Total number of products: {2}"));
+                        })
+              .AutoBind(false)
+              .DataSource(dataSource => dataSource
+              .Ajax()
+              .PageSize(5)
+              .Read(read => read.Action("ProductList_Read", "Quote").Data("getQuoteId")))
+                .Events(e =>
+                {
+                    e.DataBound("onProductGrid_DataBound");
+                })
+    )
+</div>
+
+@(Html.Kendo()
+    .Window()
+    .Name("Popup")
+    .Modal(true)
+    .Visible(false)
+    .Draggable(true)
+    .Resizable()
+)
+<script type="text/javascript" src="@Url.Content("~/Scripts/qm/qm.quote.js")"></script>

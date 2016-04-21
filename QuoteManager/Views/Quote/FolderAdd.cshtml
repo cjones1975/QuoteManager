@@ -1,0 +1,24 @@
+﻿@model QuoteManager.Models.Database.Quote.tbl_quotefolder
+
+@using (Ajax.BeginForm("FolderAdd", "Quote", new { view = "FolderNew" }, new AjaxOptions { UpdateTargetId = "response", OnSuccess = "onFolder_Save" }, new { @class = "form-inline" }))
+{
+    <button type="button" class="k-button" aria-label="Left Align">
+        <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+    </button>
+    <div class="form-group">
+        @Html.Kendo().TextBoxFor(model => model.name).HtmlAttributes(new { autofocus = "autofocus", style = "width:300px;height:28px" })
+    </div>
+    <button class="k-button" type="submit" id="AddFolder">
+        <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Create Folder
+    </button>
+    <button class="k-button" type="button" onclick="onFolder_Cancel()" id="CancelAddFolder">
+        <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> Cancel
+    </button>
+    <div class="field-validation-error" id="response"></div>
+}
+<script>
+    $(document).ready(function () {
+        $('#response').hide();
+    });
+
+</script>

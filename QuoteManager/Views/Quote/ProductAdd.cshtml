@@ -1,0 +1,109 @@
+﻿@model IEnumerable<QuoteManager.Models.ViewModel.Product.ProductFamilyViewModel>
+@using (Ajax.BeginForm("ProductAdd", "Quote", new AjaxOptions { UpdateTargetId = "response", OnBegin = "ProductAdd_Begin", OnSuccess = "ProductAdd_Success" }))
+{
+<div style="width:310px">
+    @Html.Hidden("quoteId", ViewData["QuoteId"])
+    <div class="editor-label">
+        @Html.Label("Product Family")
+    </div>
+    <div class="editor-field">
+        @(Html.Kendo().DropDownList()
+        .Name("productFamilyId")
+        .OptionLabel("Select a product family...")
+        .HtmlAttributes(new { style = "width:300px" })
+        .DataTextField("name")
+        .DataValueField("productFamilyId")
+        .DataSource(source =>
+           {
+               source.Read(read =>
+               {
+                   read.Action("ProductFamily_Read", "Quote");
+               });
+           })
+         .SelectedIndex(0)
+        )
+    </div>
+    <div class="editor-label" style="padding-top:5px">
+        @Html.Label("Product Group")
+    </div>
+    <div class="editor-field">
+        @(Html.Kendo().DropDownList()
+        .Name("productGroupId")
+        .OptionLabel("Select a product group...")
+        .HtmlAttributes(new { style = "width:300px" })
+        .DataTextField("name")
+        .DataValueField("productGroupId")
+        .DataSource(source =>
+        {
+            source.Read(read =>
+            {
+                read.Action("ProductGroup_Read", "Quote").Data("filterProductGroup");
+            })
+            .ServerFiltering(true);
+        })
+              .Enable(false)
+              .AutoBind(false)
+         .CascadeFrom("productFamilyId")
+        )
+    </div>
+    <div class="editor-label" style="padding-top:5px">
+        @Html.Label("Products")
+    </div>
+    <div class="editor-field">
+        @(Html.Kendo().DropDownList()
+        .Name("productId")
+        .OptionLabel("Select a product...")
+        .HtmlAttributes(new { style = "width:300px" })
+        .DataTextField("name")
+        .DataValueField("productId")
+        .DataSource(source =>
+        {
+            source.Read(read =>
+            {
+                read.Action("Product_Read", "Quote").Data("filterProduct");
+            })
+            .ServerFiltering(true);
+        })
+              .Enable(false)
+              .AutoBind(false)
+         .CascadeFrom("productGroupId")
+        )
+    </div>
+    <div id="response"></div>
+    <div style="text-align:right; margin-top:25px">
+        <button class="k-button" type="submit" id="ProductAdd">
+            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Add Product
+        </button>
+        <button class="k-button" type="button" onclick="closePopup()" id="CancelEditQuote">
+            <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> Cancel
+        </button>
+    </div>
+ </div> 
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#response').hide();
+        $("#Popup").data("kendoWindow").center();
+    });
+
+    function ProductAdd_Begin() {
+        $('#response').html("");
+        $('#response').hide();
+    }
+
+    function ProductAdd_Success(result) {
+        if (result.success === true) {
+            $('#ProductGrid').data('kendoGrid').dataSource.read();
+            $('#response').removeClass('field-validation-error');
+            $('#response').addClass('field-validated');
+            $('#response').html(result.msg);
+            $('#response').show();
+        }
+        else {
+            $('#response').removeClass('field-validated');
+            $('#response').addClass('field-validation-error');
+            $('#response').html(result.msg);
+            $('#response').show();
+        }
+    }
+</script>

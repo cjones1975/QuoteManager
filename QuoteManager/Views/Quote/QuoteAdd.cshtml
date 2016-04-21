@@ -1,0 +1,239 @@
+﻿@model QuoteManager.Models.ViewModel.Quote.QuoteAddEditViewModel
+
+@using (Ajax.BeginForm("QuoteAdd", "Quote", new AjaxOptions { HttpMethod = "POST", OnSuccess = "onQuote_Add" }, new { id = "frmAddQuote" }))
+{
+    <fieldset>
+        <table style="width:650px">
+            <tr>
+                <td style="width:450px">
+                    <div class="editor-label">
+                        @Html.LabelFor(m => m.customerId)
+                        @Html.ValidationMessageFor(m => m.customerId)
+                    </div>
+                    <div class="editor-field">
+                        @(Html.Kendo().ComboBoxFor(m => m.customerId)
+                            .Name("customerId")
+                            .Placeholder("Select a customer...")
+                            .HtmlAttributes(new { style = "width:440px" })
+                            .Filter("startswith")
+                            .SelectedIndex(0)
+                            .DataTextField("name")
+                            .DataValueField("customerId")
+                            .BindTo(Model.Customers)
+                            .Suggest(true)
+                            .Events(e =>
+                            {
+                                e.Change("onCustomerName_Change");
+                            })
+                        )
+                    </div>
+                </td>
+                <td style="width:100px">
+                    <div class="editor-label">
+                        @Html.Label("Numeric Id")
+                    </div>
+                    <div class="editor-field">
+                        @(Html.Kendo().ComboBoxFor(m => m.customerId)
+                            .Name("custId")
+                            .HtmlAttributes(new { style = "width:80px" })
+                            .Filter("startswith")
+                            .DataTextField("customerId")
+                            .DataValueField("customerId")
+                            .SelectedIndex(0)
+                            .BindTo(Model.Customers)
+                            .Events(e =>
+                            {
+                                e.Change("onCustomerId_Change");
+                            })
+                        )
+                    </div> 
+                </td>
+                <td style="width:100px">
+                    <div class="editor-label">
+                        @Html.Label("Alpha Code")
+                    </div>
+                    <div class="editor-field">
+                        @(Html.Kendo().ComboBoxFor(m => m.customerId)
+                            .Name("alphaCode")
+                            .HtmlAttributes(new { style = "width:80px" })
+                            .Filter("startswith")
+                            .DataTextField("alphaCode")
+                            .DataValueField("customerId")
+                            .SelectedIndex(0)
+                            .BindTo(Model.Customers)
+                            .Events(e =>
+                            {
+                                e.Change("onAlphaCode_Change");
+                            })
+                        )
+                    </div> 
+                </td>
+            </tr>
+        </table>
+        <hr>
+        <table style="width:650px">
+            <tr>
+                <td style="width:200px">
+                    <div class="editor-label">
+                        @Html.LabelFor(m => m.folderId)
+                        @Html.ValidationMessageFor(m => m.folderId)
+                    </div>
+                    <div class="editor-field">
+                       @(Html.Kendo().DropDownList()
+                        .Name("folderId")
+                        .HtmlAttributes(new { style = "width:200px;height:28px" })
+                        .DataTextField("name")
+                        .DataValueField("folderId")
+                        .SelectedIndex(0)
+                        .DataSource(source =>
+                        {
+                            source.Read(read =>
+                            {
+                                read.Action("FolderList_Read", "Quote");
+                            })
+                            .ServerFiltering(true);
+                        })
+                )
+                    </div>
+                </td>
+                <td style="width:200px">
+                    
+                </td>
+                <td style="width:200px">
+                    
+                </td>
+            </tr>
+            <tr>
+<tr>
+                <td style="width:200px">
+                    <div class="editor-label">
+                        @Html.LabelFor(m => m.name)
+                        @Html.ValidationMessageFor(m => m.name)
+                    </div>
+                    <div class="editor-field">
+                        @Html.Kendo().TextBoxFor(m => m.name).HtmlAttributes(new { style = "width:200px" })
+                    </div>
+                </td>
+                <td style ="width:200px">
+                    <div class="editor-label">
+                        @Html.LabelFor(m => m.owner)
+                    </div>
+                    <div class="editor-field">
+                        @Html.Kendo().TextBoxFor(m => m.owner).HtmlAttributes(new { style = "width:200px" })
+                    </div>
+                </td>
+                <td style="width:200px">
+                    <div class="editor-label">
+                        @Html.LabelFor(m => m.quoteStatusId)
+                    </div>
+                    <div class="editor-field">
+                        @(Html.Kendo().ComboBoxFor(m => m.quoteStatusId)
+                            .Name("quoteStatusId")
+                            .HtmlAttributes(new { style = "width:200px", @readonly = "readonly", @class = "k-state-disabled" })
+                            .Filter("startswith")
+                            .DataTextField("name")
+                            .DataValueField("quoteStatusId")
+                            .SelectedIndex(0)
+                            .BindTo(Model.QuoteStatuses)
+                        )
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:200px">
+                    <div class="editor-label">
+                        @Html.LabelFor(m => m.contactFirstName)
+                    </div>
+                    <div class="editor-field">
+                        @Html.Kendo().TextBoxFor(m => m.contactFirstName).HtmlAttributes(new { style = "width:200px" })
+                    </div>
+                </td>
+                <td style="width:200px">
+                    <div class="editor-label">
+                        @Html.LabelFor(m => m.contactLastName)
+                    </div>
+                    <div class="editor-field">
+                        @Html.Kendo().TextBoxFor(m => m.contactLastName).HtmlAttributes(new { style = "width:200px" })
+                    </div>
+                </td>
+                <td style="width:200px">
+                    <div class="editor-label">
+                        @Html.LabelFor(m => m.currencyId)
+                    </div>
+                    <div class="editor-field">
+                        @(Html.Kendo().ComboBoxFor(m => m.currencyId)
+                            .Name("currencyId")
+                            .HtmlAttributes(new { style = "width:200px" })
+                            .Filter("startswith")
+                            .SelectedIndex(0)
+                            .DataTextField("currency")
+                            .DataValueField("currencyId")
+                            .BindTo(Model.Currencies)
+                        )
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:200px">
+                    <div class="editor-label">
+                        @Html.LabelFor(m => m.quoteTypeId)
+                    </div>
+                    <div class="editor-field">
+                        @(Html.Kendo().DropDownListFor(m => m.quoteTypeId)
+                            .Name("quoteTypeId")
+                            .HtmlAttributes(new { style = "width:200px" })
+                            .DataTextField("name")
+                            .DataValueField("quoteTypeId")
+                            .SelectedIndex(0)
+                            .BindTo(Model.QuoteTypes)
+                        )
+                    </div>
+                </td>
+                <td style="width:200px">
+                    <div class="editor-label">
+                        @Html.LabelFor(m => m.createdDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.Kendo().TextBoxFor(m => m.createdDate).HtmlAttributes(new { style = "width:200px", @readonly = "readonly", @class = "k-state-disabled" })
+                    </div>
+                </td>
+                <td style="width:200px">
+                    <div class="editor-label">
+                        @Html.LabelFor(m => m.modifiedDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.Kendo().TextBoxFor(m => m.modifiedDate).HtmlAttributes(new { style = "width:200px", @readonly = "readonly", @class = "k-state-disabled" })
+                    </div>
+                </td>
+            </tr>
+        </table>  
+        <hr />
+        <div class="field-validation-error" id="response"></div>
+        <div style="text-align:right">
+            <button class="k-button" type="submit" id="AddQuote">
+                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Add Quote
+            </button>
+            <button class="k-button" type="button" onclick="closePopup()" id="CancelAddQuote">
+                <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> Cancel
+            </button>
+        </div>
+    </fieldset>  
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        window.validator = $("#frmAddQuote").kendoValidator().data("kendoValidator");
+        $('#response').hide();
+        $("#Popup").data("kendoWindow").center();
+    });
+
+    function QuoteAdd_Success(result) {
+        if (result.success === true) {
+            $('#response').html("");
+            $('#response').hide();
+        }
+        else {
+            $('#response').html(result.error);
+            $('#response').show();    
+        }
+    }
+</script>

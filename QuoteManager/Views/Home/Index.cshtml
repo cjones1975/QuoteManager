@@ -1,32 +1,59 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Home";
  }
-@(Html.Kendo().DatePicker().Name("datepicker"))
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
+<div class="container container-main">
+    <div class="row">
+        <div class="col-md-12">
+            @Html.ActionLink("New Quote", "QuoteNew", "Quote")
+            /
+            @Html.ActionLink("View Quotes", "QuoteView", "Quote")
+        </div>
+     </div>  
+    <hr class="hr-main" />
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Panel primary</h3>
+                </div>
+                <div class="panel-body">
+        @(Html.Kendo().Grid<QuoteManager.Models.ViewModel.Quote.QuoteViewModel>()
+        .Name("grid")
+        .ToolBar(toolBar => toolBar.Template(@<text><input class='k-textbox' value="Search..." onfocus="if (this.value=='Search...') this.value='';" onblur="this.value = this.value==''?'Search...':this.value;" id='searchbox' /></text>))
+        
+        .Columns(columns =>
+                {
+                    columns.Bound(c => c.quoteId);
+                    columns.Bound(c => c.name);
+                    columns.Bound(c => c.owner);
+                    columns.Bound(c => c.createdDate);
+                    columns.Bound(c => c.modifiedDate);
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-            
-        </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+                })
+                .HtmlAttributes(new { style = "height: 200px;" })
+                .Scrollable()
+                .Sortable()
+                .Pageable(pageable => pageable
+                    .Refresh(true)
+                    .PageSizes(true)
+                    .ButtonCount(5))
+                .DataSource(dataSource => dataSource
+                    .Ajax()
+                    .Read(read => read.Action("Customers_Read", "Grid"))
+                    .PageSize(20)
+                )
+                    )
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">.col-md-4</div>
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+        </div>
+<script type="text/javascript">
+    function addSearch() {
+        return { searchbox: $('#searchbox').val() };
+    }
+    $('#searchbox').keyup(function () {
+        $('#gridWorkflows').data('kendoGrid').dataSource.read();
+    });
+</script>

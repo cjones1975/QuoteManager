@@ -1,0 +1,32 @@
+﻿<div id="Folders">
+    <button type="button" class="k-button" aria-label="Left Align">
+        <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+    </button>
+    @(Html.Kendo().DropDownList()
+            .Name("QuoteFolder")
+            .HtmlAttributes(new { style = "width:300px;height:28px" })
+            .DataTextField("name")
+            .DataValueField("folderId")
+            .DataSource(source =>
+                {
+                    source.Read(read =>
+                    {
+                        read.Action("FolderList_Read", "Quote");
+                    })
+                    .ServerFiltering(true);
+                })
+            .Events(e =>
+                {
+                    e.DataBound("onFolder_DataBound").Change("onFolder_Change");
+                })
+    )
+<button class="k-button" type="submit" onclick="onFolder_Add()" id="AddFolder">
+    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Add Folder
+</button>
+    <button class="k-button" type="submit" onclick="onFolder_Edit()" id="EditFolder">
+        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>   Rename Folder
+    </button>
+<button class="k-button" type="submit" onclick="onFolder_Delete()">
+    <span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> Delete Folder
+</button>
+</div>

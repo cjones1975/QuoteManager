@@ -24,11 +24,13 @@ namespace QuoteManager.Dal
         // End Quote Folders
         IQueryable<tbl_customer> GetCustomer();
         IQueryable<tbl_currency> GetCurrency();
+        // Products
         IQueryable<tbl_productfamily> GetProductFamily();
         IQueryable<tbl_productgroup> GetProductGroup(int id);
         IQueryable<tbl_product> GetProductByGroupId(int id);
         IQueryable<tbl_product> GetProducts();
         IQueryable<tbl_assignedproducts> GetAssignedProducts(int quoteId);
+        tbl_assignedproducts GetAssignedProductByID(int assignedproductId);
         void InsertAssignedProduct(tbl_assignedproducts assignedproduct);
         void UpdateAssignedProduct(tbl_assignedproducts assignedproduct);
         void DeleteAssignedProduct(int assignedproductId);

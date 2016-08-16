@@ -1,0 +1,143 @@
+﻿@model QuoteManager.Models.ViewModel.Product.CorporateConnect.CorporateConnectViewModel
+
+@using (Ajax.BeginForm("CorporateConnect_Edit", "CorporateConnect", new AjaxOptions { UpdateTargetId = "response", OnComplete = "addOrEdit" }, new { id = "corporateconnectForm" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="div-scoller" style="height:520px; width:100%">
+        @(Html.Kendo().PanelBar()
+        .Name("panelBar")
+        .HtmlAttributes(new { style = "width:200" })
+        .Items(p =>
+        {
+        p.Add().Text("Configuration").Expanded(true)
+            .Content(@<div class="panel-div">
+                <div class="editor-label">@Html.DisplayNameFor(model => model.existingSite)</div>
+                <div class="editor-field">
+                    @(Html.Kendo().DropDownListFor(model => model.existingSite)
+          .Name("existingSite")
+          .DataTextField("Text")
+          .DataValueField("Value")
+          .BindTo(new List<SelectListItem>() {
+              new SelectListItem() {
+                  Text = "No",
+                  Value = "1"
+              },
+              new SelectListItem() {
+                  Text = "Yes",
+                  Value = "2"
+              },
+          })
+          .Value("1")
+          .HtmlAttributes(new { style = "width: 210px" })
+                    )
+                </div>
+                <div class="editor-label">@Html.DisplayNameFor(model => model.routerName)</div>
+                <div class="editor-field">
+                    @(Html.Kendo().TextBoxFor(model => model.routerName)
+                    .Name("routerName")
+                    .HtmlAttributes(new { style = "width:210px" })
+                )
+            </div>
+            <div class="editor-label">@Html.DisplayNameFor(model => model.isp)</div>
+            <div class="editor-field">
+                @(Html.Kendo().DropDownListFor(model => model.isp)
+          .Name("isp")
+          .DataTextField("Text")
+          .DataValueField("Value")
+          .BindTo(new List<SelectListItem>() {
+              new SelectListItem() {
+                  Text = "No",
+                  Value = "1"
+              },
+              new SelectListItem() {
+                  Text = "Yes",
+                  Value = "2"
+              },
+          })
+          .Value("1")
+          .HtmlAttributes(new { style = "width: 210px" })
+                )
+            </div>
+                          <div class="editor-label">@Html.DisplayNameFor(model => model.ispPrimaryBandwidth)</div>
+                          <div class="editor-field">
+                              @(Html.Kendo().TextBoxFor(model => model.ispPrimaryBandwidth)
+                    .Name("ispPrimaryBandwidth")
+                    .HtmlAttributes(new { style = "width:210px" })
+                              )
+                          </div>
+                          <div class="editor-label">@Html.DisplayNameFor(model => model.ispBackupBandwidth)</div>
+                          <div class="editor-field">
+                              @(Html.Kendo().TextBoxFor(model => model.ispBackupBandwidth)
+                    .Name("ispBackupBandwidth")
+                    .HtmlAttributes(new { style = "width:210px" })
+                              )
+                          </div>
+        </div>);
+        p.Add().Text("Manual Cost Input").Expanded(false)
+            .Content(@<div class="panel-div">
+                <div class="editor-label">@Html.DisplayNameFor(model => model.ispOTC)</div>
+                <div class="editor-field">
+                    @(Html.Kendo().NumericTextBoxFor(model => model.ispOTC)
+                    .Name("ispOTC")
+                    .HtmlAttributes(new { style = "width:210px; text-align:right" })
+                    .Format("c")
+                    .Spinners(false)
+                    .Culture((String)ViewData["Currency"])
+                    )
+                </div>
+                <div class="editor-label">@Html.DisplayNameFor(model => model.ispMRC)</div>
+                <div class="editor-field">
+                    @(Html.Kendo().NumericTextBoxFor(model => model.ispMRC)
+                    .Name("ispMRC")
+                    .HtmlAttributes(new { style = "width:210px; text-align:right" })
+                    .Format("c")
+                    .Spinners(false)
+                    .Culture((String)ViewData["Currency"])
+                    )
+                </div>
+                <div class="editor-label">@Html.DisplayNameFor(model => model.accessOTC)</div>
+                <div class="editor-field">
+                    @(Html.Kendo().NumericTextBoxFor(model => model.accessOTC)
+                    .Name("accessOTC")
+                    .HtmlAttributes(new { style = "width:210px; text-align:right" })
+                    .Format("c")
+                    .Spinners(false)
+                    .Culture((String)ViewData["Currency"])
+                    )
+                </div>
+                <div class="editor-label">@Html.DisplayNameFor(model => model.accessMRC)</div>
+                <div class="editor-field">
+                    @(Html.Kendo().NumericTextBoxFor(model => model.accessMRC)
+                    .Name("accessMRC")
+                    .HtmlAttributes(new { style = "width:210px; text-align:right" })
+                    .Format("c")
+                    .Spinners(false)
+                    .Culture((String)ViewData["Currency"])
+                    )
+                </div>
+                <div class="editor-label">@Html.DisplayNameFor(model => model.hardwareOTC)</div>
+                <div class="editor-field">
+                    @(Html.Kendo().NumericTextBoxFor(model => model.hardwareOTC)
+                    .Name("hardwareOTC")
+                    .HtmlAttributes(new { style = "width:210px; text-align:right" })
+                    .Format("c")
+                    .Spinners(false)
+                    .Culture((String)ViewData["Currency"])
+                    )
+                </div>
+                <div class="editor-label">@Html.DisplayNameFor(model => model.hardwareMRC)</div>
+                <div class="editor-field">
+                    @(Html.Kendo().NumericTextBoxFor(model => model.hardwareMRC)
+                    .Name("hardwareMRC")
+                    .HtmlAttributes(new { style = "width:210px; text-align:right" })
+                    .Format("c")
+                    .Spinners(false)
+                    .Culture((String)ViewData["Currency"])
+                    )
+                </div>
+            </div>);
+        })
+
+        )
+    </div>
+}

@@ -21,6 +21,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <NuGetPackageImportStamp>7762838c</NuGetPackageImportStamp>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -180,10 +181,15 @@
     <Compile Include="Controllers\Account\AccountController.cs" />
     <Compile Include="Controllers\CallbackController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\Product\CorporateConnectController.cs" />
     <Compile Include="Controllers\Quote\QuoteController.cs" />
     <Compile Include="Dal\AccountRepository.cs" />
+    <Compile Include="Dal\CorporateConnectRepository.cs" />
     <Compile Include="Dal\IAccountRepository.cs" />
+    <Compile Include="Dal\ICorporateConnectRepository.cs" />
+    <Compile Include="Dal\IProductRepository.cs" />
     <Compile Include="Dal\IQuoteRepository.cs" />
+    <Compile Include="Dal\ProductRepository.cs" />
     <Compile Include="Dal\QuoteManagerContext.cs" />
     <Compile Include="Dal\QuoteRepository.cs" />
     <Compile Include="Dal\UnitOfWork.cs" />
@@ -191,9 +197,12 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\MvcHelpers.cs" />
+    <Compile Include="Helpers\ProductViewEngine.cs" />
     <Compile Include="Helpers\Security.cs" />
+    <Compile Include="Helpers\XmlMethods.cs" />
     <Compile Include="Models\Database\Account\tbl_users.cs" />
     <Compile Include="Models\Database\Product\SitaConnect\tbl_corporateconnect.cs" />
+    <Compile Include="Models\Database\Product\tbl_country.cs" />
     <Compile Include="Models\Database\Product\tbl_assignedproducts.cs" />
     <Compile Include="Models\Database\Product\tbl_product.cs" />
     <Compile Include="Models\Database\Product\tbl_productfamily.cs" />
@@ -209,6 +218,9 @@
     <Compile Include="Models\ViewModel\Error\ErrorReportViewModel.cs" />
     <Compile Include="Models\ViewModel\Home\SFDCOpportunities.cs" />
     <Compile Include="Models\ViewModel\Product\BvpnViewModel.cs" />
+    <Compile Include="Models\ViewModel\Product\CorporateConnect\CorporateConnectGridViewModel.cs" />
+    <Compile Include="Models\ViewModel\Product\CorporateConnect\CorporateConnectViewModel.cs" />
+    <Compile Include="Models\ViewModel\Product\CountryViewModel.cs" />
     <Compile Include="Models\ViewModel\Product\ProductFamilyViewModel.cs" />
     <Compile Include="Models\ViewModel\Quote\QuoteAddEditViewModel.cs" />
     <Compile Include="Models\ViewModel\Quote\QuoteFolderViewModel.cs" />
@@ -804,6 +816,9 @@
     <Content Include="Views\Quote\FolderEdit.cshtml" />
     <Content Include="Views\Quote\QuoteEdit.cshtml" />
     <Content Include="Views\Quote\ProductAdd.cshtml" />
+    <Content Include="Views\Product\CorporateConnect\Index.cshtml" />
+    <Content Include="Scripts\qm\qm.corporateconnect.js" />
+    <Content Include="Views\Product\CorporateConnect\Configure.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

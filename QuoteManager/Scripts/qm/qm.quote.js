@@ -1,9 +1,9 @@
 ﻿
 /*GLOBAL PAGE VARIABLES
 -------------------------------------------------------------------------------*/
-var folderValue = parseInt(document.getElementById('selectedFolderId').value),
-    quoteValue = parseInt(document.getElementById('selectedQuoteId').value),
-    quotePage = parseInt(document.getElementById('selectedQuotePage').value);
+var folderValue = parseInt(document.getElementById("selectedFolderId").value),
+    quoteValue = parseInt(document.getElementById("selectedQuoteId").value),
+    quotePage = parseInt(document.getElementById("selectedQuotePage").value);
 
 function showPopup(popupTitle, httpType, popupUrl, popupData) {
     var popup = $("#Popup").data("kendoWindow");
@@ -23,7 +23,7 @@ function closePopup() {
 function onQuoteMenu_Select(e) {
    //var contentUrl = "";
    //   $(e.item).children(".k-link").text().toUpperCase()
-    var itemId = $(e.item).attr('id');
+    var itemId = $(e.item).attr("id");
     var win = $("#Popup").data("kendoWindow");
     switch (itemId) {
         case "ADDQUOTE":
@@ -61,8 +61,8 @@ function getQuoteId() {
 
 // Close form window and refresh folder and grid controls
 function onQuote_Add(folderId){
-    $('#QuoteFolder').data('kendoDropDownList').value(folderId);
-    $('#QuoteFolder').data('kendoDropDownList').trigger('change');
+    $("#QuoteFolder").data("kendoDropDownList").value(folderId);
+    $("#QuoteFolder").data("kendoDropDownList").trigger("change");
     closePopup();
 }
 
@@ -93,15 +93,35 @@ function onAlphaCode_Change() {
 /* END QUOTE MENU FUNCTION */
 
 /* FOLDER FUNCTIONS */
+function folderButtonAttr() {
+    if ($("#QuoteFolder").data("kendoDropDownList").text() === "My Quotes") {
+        $("#EditFolder").removeClass("k-button");
+        $("#EditFolder").addClass("k-button k-state-disabled");
+        $("#EditFolder").attr("disabled", true);
+        $("#DeleteFolder").removeClass("k-button");
+        $("#DeleteFolder").addClass("k-button k-state-disabled");
+        $("#DeleteFolder").attr("disabled", true);
+    }
+    else {
+        $("#EditFolder").removeClass("k-button k-state-disabled");
+        $("#EditFolder").addClass("k-button");
+        $("#EditFolder").attr("disabled", false);
+        $("#DeleteFolder").removeClass("k-button k-state-disabled");
+        $("#DeleteFolder").addClass("k-button");
+        $("#DeleteFolder").attr("disabled", false);
+    }
+}
+
 function onFolder_DataBound() {
-    $('#QuoteFolder').data('kendoDropDownList').select(function (dataItem) {
+    $("#QuoteFolder").data("kendoDropDownList").select(function (dataItem) {
         return dataItem.folderId === parseInt(folderValue);
     })
-    var datasource = $('#QuoteGrid').data().kendoGrid.datasource;
+    var datasource = $("#QuoteGrid").data().kendoGrid.dataSource;
     datasource.query({
         page: quotePage,
         pageSize: datasource.pageSize()
     })
+    folderButtonAttr()
 }
 
 function onFolder_Add() {
@@ -114,7 +134,7 @@ function onFolder_Add() {
             $("#SECTION_FOLDERS").html(data);
         },
         error: function () {
-            alert('error!');
+            alert("error!");
         }
     });
 }
@@ -129,7 +149,7 @@ function onFolder_Edit() {
         type: "GET",
         data: { id: $("#QuoteFolder").data("kendoDropDownList").value() },
         success: function (data) {
-            $('#SECTION_FOLDERS').html(data);
+            $("#SECTION_FOLDERS").html(data);
         }
     });
 }
@@ -143,7 +163,7 @@ function onFolder_Delete() {
             data: { id: $("#QuoteFolder").data("kendoDropDownList").value() },
             success: function (data) {
                 if (data.success === true) {
-                    $('#SECTION_FOLDERS').html(data.view);
+                    $("#SECTION_FOLDERS").html(data.view);
                 }
                 else if (data.success === false) {
                     alert("Folders that contain quotes cannot be deleted.");
@@ -159,8 +179,8 @@ function onFolder_Save(result) {
         getFolderList();
     }
     else {
-        $('#response').html(result.error);
-        $('#response').show();
+        $("#response").html(result.error);
+        $("#response").show();
     }
 }
 
@@ -170,26 +190,29 @@ function onFolder_Cancel() {
 
 function getFolderList() {
     $.ajax({
-        httpMethod: 'GET',
+        httpMethod: "GET",
         url: "/Quote/FolderList",
         cache: false,
-        dataType: 'html',
+        dataType: "html",
         success: function (data) {
             //load Folder list
-            $('#SECTION_FOLDERS').html(data);
+            $("#SECTION_FOLDERS").html(data);
         }
     });
 }
 
 function onFolder_Change()
 {
+    // enable/disable folder buttons
+    folderButtonAttr()
+
     quoteValue = 0;
     folderValue = $("#QuoteFolder").data("kendoDropDownList").value();
     $("#QuoteGrid").data("kendoGrid").dataSource.read();
 }
 
 function getFolderId() {
-    value = $('#QuoteFolder').data('kendoDropDownList').value();
+    value = $("#QuoteFolder").data("kendoDropDownList").value();
     return {
         Id: value
     };
@@ -204,7 +227,7 @@ function onQuoteGrid_Change(e) {
     //var model = quoteGrid.dataItem(quoteGrid.select());
 
     //Service_Grid read data
-    $('#ProductGrid').data('kendoGrid').dataSource.read();
+    $("#ProductGrid").data("kendoGrid").dataSource.read();
     
 }
     
@@ -214,18 +237,18 @@ function onQuoteGrid_DataBound(e) {
     if (e.sender._data.length === 0) {
         //Send empty datasoruce to Service_Grid
         $("#ProductGrid").data("kendoGrid").dataSource.data([]);
-        //Disable 'Quote' menu items
+        //Disable "Quote" menu items
         //$("#Quotation_Menu").data("kendoMenu").enable("#EDITQUOTE", false);
-        //Disable 'Service' menu item
+        //Disable "Service" menu item
         //$("#Service_Menu").data("kendoMenu").enable("#SERVICEACTIONS", false);
         //$("#Quotation_Menu").data("kendoMenu").enable("#DELETEQUOTE", false);
         //$("#Quotation_Menu").data("kendoMenu").enable("#DUPLICATEQUOTE", false);
     }
     else {
-        //Enable 'Quote' menu item
+        //Enable "Quote" menu item
         //$("#Quotation_Menu").data("kendoMenu").enable("#EDITQUOTE", true);
-        //Enable 'Total Contract Value' menu item
-        //Enable 'Service' menu item
+        //Enable "Total Contract Value" menu item
+        //Enable "Service" menu item
        // $("#Service_Menu").data("kendoMenu").enable("#SERVICEACTIONS", true);
         //$("#Quotation_Menu").data("kendoMenu").enable("#DELETEQUOTE", true);
         //$("#Quotation_Menu").data("kendoMenu").enable("#DUPLICATEQUOTE", true);
@@ -242,7 +265,7 @@ function onQuoteGrid_DataBound(e) {
         }
         else {
             var grid = this;
-            $.each(this.tbody.find('tr'), function () {
+            $.each(this.tbody.find("tr"), function () {
                 var model = grid.dataItem(this);
                 if (model.quoteId === quoteValue) {
                     uid = model.uid
@@ -259,25 +282,25 @@ function onQuoteGrid_DataBound(e) {
 /* PRODUCT FUNCTIONS */
 
 function onProductMenu_Select(e) {
-    var id = $(e.item).attr('id');
+    var id = $(e.item).attr("id");
    
-    //var serviceGrid = $("#Service_Grid").data("kendoGrid");
-    //var model = serviceGrid.dataItem(serviceGrid.select());
+    var serviceGrid = $("#ProductGrid").data("kendoGrid");
+    var model = serviceGrid.dataItem(serviceGrid.select());
     switch (id) {
         case "ADDPRODUCT":
             var quoteGrid = $("#QuoteGrid").data("kendoGrid");
             showPopup("CIS Solution Line", "GET", "/Quote/ProductAdd", quoteGrid.dataItem(quoteGrid.select()).quoteId);
             break;
-        case "DELETESERVICE":
-            $('#ProductGrid').data('kendoGrid').dataSource.read();
-            //var conf = confirm("Are you sure you want this service?");
-            //if (conf === true) {
-            //    var contentUrl = "ServiceDelete";
-              //  $.ajax({
-               //     url: contentUrl,
-               //     data: { id: model.assignedserviceId }
-               // });
-            //}
+        case "DELETEPRODUCT":
+            var conf = confirm("Are you sure you want this service?");
+            if (conf === true) {
+                $.ajax({
+                    httpMethod: "GET",
+                    url: "/Quote/ProductDelete",
+                    cache: false,
+                    data: { id: model.assignedProductId }
+                });
+            }
             break;
     }
 }
@@ -307,7 +330,42 @@ function onProductGrid_DataBound(e) {
     }
 }
 
-function onOpen_Product() {
+function onProduct_Delete() {
+    $("#ProductGrid").data("kendoGrid").dataSource.read();
+}
 
+function onOpen_Product() { 
+    var folderId = $("#QuoteFolder").data("kendoDropDownList").value();
+    var productGrid = $("#ProductGrid").data("kendoGrid");
+    var productModel = productGrid.dataItem(productGrid.select());
+    var quoteGrid = $("#QuoteGrid").data("kendoGrid");
+    var quoteModel = quoteGrid.dataItem(quoteGrid.select()),
+        quotePageNumber = quoteGrid.dataSource.page(),
+        quotePageSize = quoteGrid.dataSource.pageSize(),
+        productUrl = '/' + productModel.controller + '/Index?',
+        readonly = "false";
+    //if (quoteModel.status === STATUS_SIGNED) {
+    //    readonly = true;
+    //}
+    $.ajax({
+        type: "POST",
+        url: "/Quote/NavigateToProduct",
+        data: {
+            productId: productModel.assignedProductId,
+            quotePageNumber: quotePageNumber,
+            quotePageSize: quotePageSize,
+            pageName: "QuoteView",
+            linkName: quoteModel.name,
+            folderId: folderId,
+            quoteId: quoteModel.quoteId,
+            isReadOnly: readonly
+        },
+        success: function (data) {
+            window.location = productUrl + data.urlParam;
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert("error!" + errorThrown);
+        }
+    });
 }
 

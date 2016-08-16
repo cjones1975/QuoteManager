@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "New Quote";
+ }
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>NewQuote</title>
+</head>
+<body>
+    <div class="container container-main">
+        @(Html.Kendo().TabStrip()
+              .Name("quote_tb")
+                      .HtmlAttributes(new { style=""})
+              .Items(tabstrip =>
+              {
+                  tabstrip.Add().Text("Quote Details")
+                      .Selected(true)
+                      .Content(@<text>Loading Content...</text>)
+                      .LoadContentFrom("QuoteDetail", "Quote");
+                  tabstrip.Add().Text("Salesforce")
+                      .Content(@<text>Loading Content</text>);
+
+              })
+)
+    </div>
+</body>
+</html>
+<script type="text/javascript" src="@Url.Content("~/Scripts/qm/qm.quote.js")"></script>
+

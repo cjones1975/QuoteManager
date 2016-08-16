@@ -3,6 +3,7 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using QuoteManager.Models.Database.Account;
 using QuoteManager.Models.Database.Quote;
 using QuoteManager.Models.Database.Product;
+using QuoteManager.Models.Database.Product.SitaConnect;
 
 namespace QuoteManager.Dal
 {
@@ -21,11 +22,15 @@ namespace QuoteManager.Dal
         public DbSet<tbl_customer> Customer { get; set; }
         public DbSet<tbl_currency> Currency { get; set; }
 
-        // Product
+        // Products
         public DbSet<tbl_productfamily> ProductFamily { get; set; }
         public DbSet<tbl_productgroup> ProductGroup { get; set; }
         public DbSet<tbl_product> Product { get; set; }
         public DbSet<tbl_assignedproducts> AssignedProducts { get; set; }
+        // Sita Connect Products
+        public DbSet<tbl_corporateconnect> CorporateConnect { get; set; }
+        // Shared Product Data
+        public DbSet<tbl_country> Countries { get; set; }
 
 
     }

@@ -2,7 +2,7 @@
     padding-top: 30px;
     padding-bottom: 20px;
     font-size: 10px;
-    background-color: #ffffff;
+    background-color: white;
 }
 
 .container-main{
@@ -129,6 +129,15 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+
+/* Styles for editor and display helpers*/
+.editor-label{
+    margin: 0.5em 0 0 0.5em;
+}
+
+.editor-field{
+    margin: 0 0 1em 0.5em;
 }
 
 

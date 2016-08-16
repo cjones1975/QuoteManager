@@ -1,0 +1,136 @@
+﻿@model IEnumerable<QuoteManager.Models.ViewModel.Product.CorporateConnect.CorporateConnectGridViewModel>
+
+<div class="container">
+    <div><a href='@Url.Action(ViewBag.pageName, "Quote", new { q = Request.QueryString["q"] })' class='link'>@ViewBag.linkName</a> > Corporate Connect</div>
+    <div style="padding-top:10px">Site Details</div>
+    <div style="padding-top:10px">
+@(Html.Kendo().Splitter()
+      .Name("vertical")
+      .Orientation(SplitterOrientation.Vertical)
+      .HtmlAttributes(new { style = "height: 400px;" })
+      .Panes(verticalPanes =>
+      {
+          verticalPanes.Add()
+              .HtmlAttributes(new { id = "top-pane" })
+              .Scrollable(false)
+              .Collapsible(false)
+              .Content(
+                Html.Kendo().Splitter()
+                    .Name("horizontal")
+                    .HtmlAttributes(new { style = "height: 100%;" })
+                    .Panes(horizontalPanes =>
+                    {
+                        horizontalPanes.Add()
+                            .Scrollable(false)
+                            .Collapsible(true)
+                            .Content(@<div class="pane-content">
+                              @RenderGrid()
+                               </div>);
+                        horizontalPanes.Add()
+                            .HtmlAttributes(new { id = "right-pane" })
+                            .Collapsible(true)
+                            .Size("240px")
+                            .Content(@<div class="pane-content">
+                                @Html.Partial("Configure")
+                            </div>);
+                    }).ToHtmlString()
+              );
+      })
+)
+@helper RenderGrid()
+{
+    @(Html.Kendo().Grid(Model)
+.Name("Grid")
+.HtmlAttributes(new { style = "width:100%;height:400px" })
+.Columns(columns =>
+{
+    columns.Bound(m => m.corporateConnectId);
+    columns.Bound(m => m.siteId).Width("100px").Locked(true).Lockable(true);
+    columns.Bound(m => m.country).Width("120px").Locked(true).Lockable(true);
+    columns.Bound(m => m.location).Width("100px");
+    columns.Bound(m => m.existingSite).Width("120px").Filterable(false);
+    columns.Bound(m => m.bandwidth).Width("100px");
+    columns.Bound(m => m.serviceDescription).Width("200px").Filterable(false);
+    columns.Bound(m => m.routerName).Width("120px");
+    columns.Template(@<text></text>).ClientTemplate("<input type='checkbox' #= accessNotRequired ? checked='checked':'' # class='chkbx' />");
+    columns.Bound(m => m.supplierCostFirm).Width("140px");
+    columns.Bound(m => m.quickConnectOTC).Width("130px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.quickConnectMRC).Width("140px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.serviceOTC).Width("100px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.serviceMRC).Width("100px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.ispOTC).Width("100px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.accessOTC).Width("100px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.accessMRC).Width("100px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.hardwareOTC).Width("120px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.hardwareMRC).Width("120px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.serviceMngtOTC).Width("140px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.serviceMngtMRC).Width("140px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.serviceOTP).Width("100px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.serviceOTPOverride).Width("150px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.serviceOTPOverrideValue).Width("180px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.serviceMRP).Width("100px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.serviceMRPDiscount).Width("150px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.serviceMRPDiscountType).Width("180px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.serviceMRPOverride).Width("150px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.serviceMRPOverrideValue).Width("180px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.quickConnectMRP).Width("140px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.quickConnectMRPOverride).Width("190px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.quickConnectMRPOverrideValue).Width("210px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.disconnectionOTP).Width("140px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.disconnectionOTPOverride).Width("180px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.disconnectionOverrideValue).Width("180px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.committedDuration).Width("140px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.billable).Width("100px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.grossMargin).Width("120px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.netMargin).Width("120px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.includeInTotals).Width("120px").Filterable(false).Lockable(false).Sortable(false);
+
+})
+.ToolBar(toolbar =>
+{
+    if ((bool)ViewData["isReadOnly"] == false)
+    {
+        //toolbar.Custom().Text("Call Pricing Portal Configuration").Url("#").HtmlAttributes(new { onclick = "importData()", style = "text-align:right" });
+        toolbar.Template(@<text>
+        @(Html.Kendo().Button()
+            .Name("WebServiceCall")
+            .HtmlAttributes(new { type = "button", onclick = "importData()", style = "text-align:right" })
+            .Content("Call Pricing Portal Configuration"))
+        @(Html.Kendo().NumericTextBox()
+            .Name("ScenarioId")
+            .Value(75827))
+        </text>);
+        
+    }
+})
+.Sortable()
+.Scrollable()
+.Selectable(selectable => selectable
+.Mode(GridSelectionMode.Multiple)
+.Type(GridSelectionType.Row))
+.Pageable(pageable =>
+{
+    pageable.Refresh(true);
+    pageable.PageSizes(new int[] { 10, 20, 50, 100 });
+})
+.Resizable(resize => resize.Columns(true))
+.Filterable()
+.ColumnMenu()
+//.Events(events => events.Change("onChange").DataBound("onDataBound"))
+.DataSource(dataSource => dataSource
+    .Ajax()
+    .Batch(false)
+    .ServerOperation(false)
+    .PageSize(10)
+    .Model(model =>
+    {
+        model.Id(m => m.corporateConnectId);
+    })
+            .Read(read => read.Action("CorporateConnect_Read", "CorporateConnect"))
+)
+
+    )
+}
+    </div>
+</div>
+<script type="text/javascript" src="@Url.Content("~/Scripts/qm/qm.corporateconnect.js")"></script>

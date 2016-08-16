@@ -8,6 +8,9 @@ namespace QuoteManager.Dal
         private readonly QuoteManagerContext dbContext = new QuoteManagerContext();
         private IAccountRepository accountRepository;
         private IQuoteRepository quoteRepository;
+        //Product
+        private IProductRepository productRepository;
+        private ICorporateConnectRepository corporateConnectRepository;
 
         public IAccountRepository AccountRepository
         {
@@ -30,6 +33,32 @@ namespace QuoteManager.Dal
                     this.quoteRepository = new QuoteRepository(dbContext);
                 }
                 return quoteRepository;
+            }
+        }
+
+
+
+        //Products
+        public IProductRepository ProductRepository
+        {
+            get
+            {
+                if (this.productRepository == null)
+                {
+                    this.productRepository = new ProductRepository(dbContext);
+                }
+                return productRepository;
+            }
+        }
+        public ICorporateConnectRepository CorporateConnectRepository
+        {
+            get
+            {
+                if (this.corporateConnectRepository == null)
+                {
+                    this.corporateConnectRepository = new CorporateConnectRepository(dbContext);
+                }
+                return corporateConnectRepository;
             }
         }
 

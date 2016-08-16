@@ -91,7 +91,7 @@
       .HtmlAttributes(new { style = "Height: 150px" })
       .Columns(columns =>
       {
-          columns.Bound(c => c.assignedProductId).Hidden();
+          columns.Bound(c => c.assignedProductId).Width("20px");
           columns.Bound(c => c.name).Width("300px");
           columns.Bound(c => c.controller)
                 .ClientTemplate("<input type='button' value='Configure Product' onClick='onOpen_Product()' class='k-button' />")

@@ -11,6 +11,7 @@ namespace QuoteManager
     {
         protected void Application_Start()
         {
+            ViewEngines.Engines.Add(new Helpers.ProductViewEngine());
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

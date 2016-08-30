@@ -14,9 +14,29 @@ namespace QuoteManager.Dal
             dbContext = context;
         }
 
+        public void UpdateCorporateConnect(tbl_corporateconnect corporateconnect)
+        {
+            dbContext.Entry(corporateconnect).State = EntityState.Modified;
+        }
+
         public IQueryable<tbl_corporateconnect> GetCorporateConnects(int assignedProductId)
         {
             return dbContext.CorporateConnect.Where(x => x.assignedProductId == assignedProductId);
+        }
+
+        public tbl_corporateconnect GetCorporateConnectById(int corporateConnectId)
+        {
+            return dbContext.CorporateConnect.First(x => x.corporateConnectId == corporateConnectId);
+        }
+
+        public bool HasCorporateConnects(int assignedProductId)
+        {
+            return dbContext.CorporateConnect.Where(x => x.assignedProductId == assignedProductId).Any();
+        }
+
+        public void AddCorporateConnect(tbl_corporateconnect corporateconnect)
+        {
+            dbContext.CorporateConnect.Add(corporateconnect);
         }
 
         // Dispose

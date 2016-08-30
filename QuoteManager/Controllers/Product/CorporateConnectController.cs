@@ -3,10 +3,12 @@ using System.Linq;
 using System.Web.Mvc;
 using QuoteManager.Dal;
 using QuoteManager.Helpers;
+using QuoteManager.Models.Database.Product.SitaConnect;
 using QuoteManager.Models.ViewModel.Product;
 using QuoteManager.Models.ViewModel.Product.CorporateConnect;
 using Kendo.Mvc.UI;
 using Kendo.Mvc.Extensions;
+using System.Collections.Generic;
 
 namespace QuoteManager.Controllers.Product
 {
@@ -45,14 +47,14 @@ namespace QuoteManager.Controllers.Product
             return View();
         }
 
-        // POST: /IpVpn/IpVpn_Read/
+        // POST: /CorporateConnect/CorporateConnect_Read/
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult CorporateConnect_Read([DataSourceRequest]DataSourceRequest request)
         {
             return Json(GetCorporateConnectGrid(Convert.ToInt16(QueryStringValue("pid"))).ToDataSourceResult(request, ModelState));
         }
 
-        // Return Ip VPN grid records
+        // Return CorporateConnect grid records
         private IQueryable<CorporateConnectGridViewModel> GetCorporateConnectGrid(int assignedProductId)
         {
             return from corporateconnect in unitOfWork.CorporateConnectRepository.GetCorporateConnects(assignedProductId)
@@ -61,6 +63,7 @@ namespace QuoteManager.Controllers.Product
 
                        corporateConnectId = corporateconnect.corporateConnectId,
                        siteId = corporateconnect.siteId,
+                       countryCode = corporateconnect.countryCode,
                        country = corporateconnect.country,
                        location = corporateconnect.location,
                        existingSite = corporateconnect.existingSite,
@@ -69,8 +72,21 @@ namespace QuoteManager.Controllers.Product
                        routerName = corporateconnect.routerName,
                        accessNotRequired = corporateconnect.accessNotRequired,
                        supplierCostFirm = corporateconnect.supplierCostFirm,
-                       //serviceOTC = corporateconnect.ser,
-                       //serviceMRC = corporateconnect.serviceMRC,
+                       isp = corporateconnect.isp,
+                       ispPrimaryBandwidth = corporateconnect.ispPrimaryBandwidth,
+                       ispBackupBandwidth = corporateconnect.ispBackupBandwidth,
+                       access = corporateconnect.access,
+                       Satellite = corporateconnect.satellite,
+                       satelliteBackupBandwidth = corporateconnect.satelliteBackupBandwidth,
+                       sitaAirBackup = corporateconnect.sitaAirBackup,
+                       serviceNet1Id = corporateconnect.serviceNet1Id,
+                       serviceNet2Id = corporateconnect.serviceNet2Id,
+                       serviceNet3Id = corporateconnect.serviceNet3Id,
+                       committedDuration = corporateconnect.committedDuration,
+                       billable = corporateconnect.billable,
+                       grossMargin = corporateconnect.grossMargin,
+                       netMargin = corporateconnect.netMargin,
+                       includeInTotals = corporateconnect.includeInTotals,
                        ispOTC = corporateconnect.ispOTC,
                        ispMRC = corporateconnect.ispMRC,
                        accessOTC = corporateconnect.accessOTC,
@@ -83,6 +99,115 @@ namespace QuoteManager.Controllers.Product
                        //setupCharges = ipvpn.bandwidthSetupCharge + ipvpn.optionSetupCharge + ipvpn.accessSetupCharge,
                        //monthlyCharges = ipvpn.bandwidthMonthlyCharge + ipvpn.optionMonthlyCharge + ipvpn.accessMonthlyCharge
                    };
+        }
+
+        // GET: /CorporateConnect/CorporateConnect_Select
+        public ActionResult CorporateConnect_Select(int id)
+        {
+            var corporateconnect = GetCorporateConnect(id);
+            return Json(new
+            {
+                corporateConnectId = corporateconnect.corporateConnectId,
+                existingSite = corporateconnect.existingSite,
+                routerName = corporateconnect.routerName,
+                isp = corporateconnect.isp,
+                ispPrimaryBandwidth = corporateconnect.ispPrimaryBandwidth,
+                ispBackupBandwidth = corporateconnect.ispBackupBandwidth,
+                satellite = corporateconnect.satellite,
+                satelliteBackupBandwidth = corporateconnect.satelliteBackupBandwidth,
+                sitaAirBackup = corporateconnect.sitaAirBackup,
+                serviceNet1Id = corporateconnect.serviceNet1Id,
+                serviceNet2Id = corporateconnect.serviceNet2Id,
+                serviceNet3Id = corporateconnect.serviceNet3Id,
+                sitaQuickStart = corporateconnect.sitaQuickStart,
+                ispOTC = corporateconnect.ispOTC,
+                ispMRC = corporateconnect.ispMRC,
+                accessOTC = corporateconnect.accessOTC,
+                accessMRC = corporateconnect.accessMRC,
+                hardwareOTC = corporateconnect.hardwareOTC,
+                hardwareMRC = corporateconnect.hardwareMRC,
+                serviceMngtOTC = corporateconnect.serviceMngtOTC,
+                serviceMngtMRC = corporateconnect.serviceMngtMRC,
+                serviceMRPOverrideValue = corporateconnect.serviceMRPOverrideValue,
+                serviceMRPDiscountType = corporateconnect.serviceMRPDiscountType
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        // Return the corporateconnect site
+        private CorporateConnectViewModel GetCorporateConnect(int corporateConnectId)
+        {
+            var corporateconnect = unitOfWork.CorporateConnectRepository.GetCorporateConnectById(corporateConnectId);
+            return new CorporateConnectViewModel()
+            {
+                corporateConnectId = corporateconnect.corporateConnectId,
+                existingSite = corporateconnect.existingSite,
+                routerName = corporateconnect.routerName,
+                isp = corporateconnect.isp,
+                ispPrimaryBandwidth = corporateconnect.ispPrimaryBandwidth,
+                ispBackupBandwidth = corporateconnect.ispBackupBandwidth,
+                satellite = corporateconnect.satellite,
+                satelliteBackupBandwidth = corporateconnect.satelliteBackupBandwidth,
+                sitaAirBackup = corporateconnect.sitaAirBackup,
+                serviceNet1Id = corporateconnect.serviceNet1Id,
+                serviceNet2Id = corporateconnect.serviceNet2Id,
+                serviceNet3Id = corporateconnect.serviceNet3Id,
+                sitaQuickStart = corporateconnect.sitaQuickStart,
+                ispOTC = corporateconnect.ispOTC,
+                ispMRC = corporateconnect.ispMRC,
+                accessOTC = corporateconnect.accessOTC,
+                accessMRC = corporateconnect.accessMRC,
+                hardwareOTC = corporateconnect.hardwareOTC,
+                hardwareMRC = corporateconnect.hardwareMRC,
+                serviceMngtOTC = corporateconnect.serviceMngtOTC,
+                serviceMngtMRC = corporateconnect.serviceMngtMRC,
+                serviceMRPOverrideValue = corporateconnect.serviceMRPOverrideValue,
+                serviceMRPDiscountType = corporateconnect.serviceMRPDiscountType
+            };
+        }
+
+        // POST: /CorporateConnect/CorporateConnect_Edit
+        public ActionResult CorporateConnect_Edit(CorporateConnectViewModel model)
+        {
+            if(ModelState.IsValid && model != null)
+            {
+                try
+                {
+                    tbl_corporateconnect corporateconnect = unitOfWork.CorporateConnectRepository.GetCorporateConnectById(model.corporateConnectId);
+                    corporateconnect.existingSite = model.existingSite;
+                    corporateconnect.routerName = model.routerName;
+                    corporateconnect.isp = model.isp;
+                    corporateconnect.ispPrimaryBandwidth = model.ispPrimaryBandwidth;
+                    corporateconnect.ispBackupBandwidth = model.ispBackupBandwidth;
+                    corporateconnect.satellite = model.satellite;
+                    corporateconnect.satelliteBackupBandwidth = model.satelliteBackupBandwidth;
+                    corporateconnect.sitaAirBackup = model.sitaAirBackup;
+                    corporateconnect.serviceNet1Id = model.serviceNet1Id;
+                    corporateconnect.serviceNet2Id = model.serviceNet2Id;
+                    corporateconnect.serviceNet3Id = model.serviceNet3Id;
+                    corporateconnect.sitaQuickStart = model.sitaQuickStart;
+                    corporateconnect.ispOTC = model.ispOTC;
+                    corporateconnect.ispMRC = model.ispMRC;
+                    corporateconnect.accessOTC = model.accessOTC;
+                    corporateconnect.accessMRC = model.accessMRC;
+                    corporateconnect.hardwareOTC = model.hardwareOTC;
+                    corporateconnect.hardwareMRC = model.hardwareMRC;
+                    corporateconnect.serviceMngtOTC = model.serviceMngtOTC;
+                    corporateconnect.serviceMngtMRC = model.serviceMngtMRC;
+                    corporateconnect.serviceMRPDiscountValue = model.servcieMRPDiscountValue;
+                    corporateconnect.serviceMRPDiscountType = model.serviceMRPDiscountType;
+
+                    unitOfWork.CorporateConnectRepository.UpdateCorporateConnect(corporateconnect);
+                    unitOfWork.Save();
+
+
+
+                }
+                catch (Exception e)
+                {
+                    ModelState.AddModelError("", "An error occured. Please verify the data");
+                }
+            }
+            return Json(ModelState.ToDataSourceResult(), JsonRequestBehavior.AllowGet);
         }
 
         // ELEMENT LISTS
@@ -104,10 +229,60 @@ namespace QuoteManager.Controllers.Product
                    };
         }
 
+        // GET: /Product/ServiceNetList1
+        public ActionResult ServiceNetList1()
+        {
+            return Json(GetServiceNet1().OrderBy(x => x.name), JsonRequestBehavior.AllowGet);
+        }
+
+        // Return list of serviceNets
+        public IQueryable<ServiceNet1ViewModel> GetServiceNet1()
+        {
+            return from serviceNet in unitOfWork.ProductRepository.GetServiceNets()
+                   select new ServiceNet1ViewModel
+                   {
+                       serviceNet1Id = serviceNet.serviceNetId,
+                       name = serviceNet.name
+                   };
+        }
+
+        // GET: /Product/ServiceNetList2
+        public ActionResult ServiceNetList2()
+        {
+            return Json(GetServiceNet2().OrderBy(x => x.name), JsonRequestBehavior.AllowGet);
+        }
+
+        // Return list of serviceNets
+        public IQueryable<ServiceNet2ViewModel> GetServiceNet2()
+        {
+            return from serviceNet in unitOfWork.ProductRepository.GetServiceNets()
+                   select new ServiceNet2ViewModel
+                   {
+                       serviceNet2Id = serviceNet.serviceNetId,
+                       name = serviceNet.name
+                   };
+        }
+
+        // GET: /Product/ServiceNetList3
+        public ActionResult ServiceNetList3()
+        {
+            return Json(GetServiceNet3().OrderBy(x => x.name), JsonRequestBehavior.AllowGet);
+        }
+
+        // Return list of serviceNets
+        public IQueryable<ServiceNet3ViewModel> GetServiceNet3()
+        {
+            return from serviceNet in unitOfWork.ProductRepository.GetServiceNets()
+                   select new ServiceNet3ViewModel
+                   {
+                       serviceNet3Id = serviceNet.serviceNetId,
+                       name = serviceNet.name
+                   };
+        }
         #region BVPN WEB SERVICE
 
         [HttpPost]
-        public JsonResult CallWebService(int scenarioId)
+        public JsonResult CallWebService(string scenarioId)
         {
             var assignedProductId = Convert.ToInt16(QueryStringValue("pid"));
             // Call WebService
@@ -119,8 +294,54 @@ namespace QuoteManager.Controllers.Product
             // Iterate data and fill model
             BvpnViewModel bvpnModel = new BvpnViewModel();
             bvpnModel = xs.parseBvpnXmlData(fileContent);
-            // Retrieve current quote data
-            
+           
+
+            if (!unitOfWork.CorporateConnectRepository.HasCorporateConnects(assignedProductId))
+            {
+                // Create new sites
+                foreach (BvpnViewModel.BvpnLineItem line in bvpnModel.LineItem)
+                {
+                    tbl_corporateconnect corporateconnect = new tbl_corporateconnect();
+                    corporateconnect.assignedProductId = assignedProductId;
+                    corporateconnect.siteId = line.siteName;
+                    corporateconnect.country = line.country;
+                    corporateconnect.countryCode = line.primaryISOCountry;
+                    corporateconnect.location = "n/a";
+                    corporateconnect.townAirportId = 1;
+                    corporateconnect.bandwidth = line.bandwidth;
+                    corporateconnect.existingSite = false;
+                    corporateconnect.isp = false;
+                    corporateconnect.access = false;
+                    corporateconnect.serviceNet1Id = 0;
+                    corporateconnect.serviceNet2Id = 0;
+                    corporateconnect.serviceNet3Id = 0;
+                    corporateconnect.sitaQuickStart = false;
+                    corporateconnect.sitaAirBackup = false;
+                    corporateconnect.supplierCostFirm = "Budgetary";
+                    corporateconnect.billable = true;
+                    corporateconnect.includeInTotals = true;
+                    corporateconnect.serviceMRPDiscountType = "%";
+                    corporateconnect.committedDuration = Convert.ToInt16(bvpnModel.contractTerm.Substring(0,2));
+                    corporateconnect.serviceOTC = line.cosOTC + line.secondCosOTC + line.totalOTP;
+                    corporateconnect.serviceMRC = line.cosMRC + line.secondCosMRC + line.totalMRP;
+                    try
+                    {
+                        unitOfWork.CorporateConnectRepository.AddCorporateConnect(corporateconnect);
+                        unitOfWork.Save();
+                    }
+                    catch(Exception ex)
+                    {
+
+                    }
+                }
+                
+            }
+            else
+            {
+                // Recuperate existing sites by matching the site name
+
+            }
+            // Update scenarioId
             return Json(new { success = true }, JsonRequestBehavior.AllowGet);
         }
 

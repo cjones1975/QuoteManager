@@ -31,6 +31,7 @@ namespace QuoteManager.Dal
         public DbSet<tbl_corporateconnect> CorporateConnect { get; set; }
         // Shared Product Data
         public DbSet<tbl_country> Countries { get; set; }
+        public DbSet<tbl_serviceNet> ServiceNets { get; set; }
 
 
     }

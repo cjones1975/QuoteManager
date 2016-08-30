@@ -20,6 +20,11 @@ namespace QuoteManager.Dal
             return dbContext.Countries;
         }
 
+        public IQueryable<tbl_serviceNet> GetServiceNets()
+        {
+            return dbContext.ServiceNets;
+        }
+
         // Dispose
         private bool disposed = false;
 

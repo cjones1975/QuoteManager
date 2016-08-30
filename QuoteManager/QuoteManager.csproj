@@ -207,12 +207,14 @@
     <Compile Include="Models\Database\Product\tbl_product.cs" />
     <Compile Include="Models\Database\Product\tbl_productfamily.cs" />
     <Compile Include="Models\Database\Product\tbl_productgroup.cs" />
+    <Compile Include="Models\Database\Product\tbl_serviceNet.cs" />
     <Compile Include="Models\Database\Quote\tbl_currency.cs" />
     <Compile Include="Models\Database\Quote\tbl_customer.cs" />
     <Compile Include="Models\Database\Quote\tbl_quotefolder.cs" />
     <Compile Include="Models\Database\Quote\tbl_quote.cs" />
     <Compile Include="Models\Database\Quote\tbl_quotestatus.cs" />
     <Compile Include="Models\Database\Quote\tbl_quotetype.cs" />
+    <Compile Include="Models\Database\tbl_site.cs" />
     <Compile Include="Models\ViewModel\Account\NewUserViewModel.cs" />
     <Compile Include="Models\ViewModel\Account\SignInViewModel.cs" />
     <Compile Include="Models\ViewModel\Error\ErrorReportViewModel.cs" />
@@ -222,6 +224,9 @@
     <Compile Include="Models\ViewModel\Product\CorporateConnect\CorporateConnectViewModel.cs" />
     <Compile Include="Models\ViewModel\Product\CountryViewModel.cs" />
     <Compile Include="Models\ViewModel\Product\ProductFamilyViewModel.cs" />
+    <Compile Include="Models\ViewModel\Product\ServiceNet2ViewModel.cs" />
+    <Compile Include="Models\ViewModel\Product\ServiceNet3ViewModel.cs" />
+    <Compile Include="Models\ViewModel\Product\ServiceNet1ViewModel.cs" />
     <Compile Include="Models\ViewModel\Quote\QuoteAddEditViewModel.cs" />
     <Compile Include="Models\ViewModel\Quote\QuoteFolderViewModel.cs" />
     <Compile Include="Models\ViewModel\Quote\QuoteProductsViewModel.cs" />
@@ -819,6 +824,7 @@
     <Content Include="Views\Product\CorporateConnect\Index.cshtml" />
     <Content Include="Scripts\qm\qm.corporateconnect.js" />
     <Content Include="Views\Product\CorporateConnect\Configure.cshtml" />
+    <Content Include="Scripts\qm\qm.corporateconnect.form.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,80 +1,117 @@
 ﻿@model QuoteManager.Models.ViewModel.Product.CorporateConnect.CorporateConnectViewModel
 
-@using (Ajax.BeginForm("CorporateConnect_Edit", "CorporateConnect", new AjaxOptions { UpdateTargetId = "response", OnComplete = "addOrEdit" }, new { id = "corporateconnectForm" }))
+@using (Ajax.BeginForm("CorporateConnect_Edit", "CorporateConnect", new AjaxOptions { UpdateTargetId = "response", OnComplete = "EditSite" }, new { id = "corporateconnectForm" }))
 {
     @Html.ValidationSummary(true)
-    <div class="div-scoller" style="height:520px; width:100%">
+    @Html.HiddenFor(model => model.corporateConnectId)
+    <div class="div-scroller" style="height:365px; width:100%">
         @(Html.Kendo().PanelBar()
         .Name("panelBar")
-        .HtmlAttributes(new { style = "width:200" })
+        .HtmlAttributes(new { style = "width:220px" })
         .Items(p =>
         {
-        p.Add().Text("Configuration").Expanded(true)
-            .Content(@<div class="panel-div">
+            p.Add().Text("Configuration").Expanded(true)
+                .Content(@<div class="panel-div">
                 <div class="editor-label">@Html.DisplayNameFor(model => model.existingSite)</div>
                 <div class="editor-field">
-                    @(Html.Kendo().DropDownListFor(model => model.existingSite)
-          .Name("existingSite")
-          .DataTextField("Text")
-          .DataValueField("Value")
-          .BindTo(new List<SelectListItem>() {
-              new SelectListItem() {
-                  Text = "No",
-                  Value = "1"
-              },
-              new SelectListItem() {
-                  Text = "Yes",
-                  Value = "2"
-              },
-          })
-          .Value("1")
-          .HtmlAttributes(new { style = "width: 210px" })
-                    )
+                    @Html.CheckBoxFor(model => model.existingSite)
                 </div>
                 <div class="editor-label">@Html.DisplayNameFor(model => model.routerName)</div>
                 <div class="editor-field">
                     @(Html.Kendo().TextBoxFor(model => model.routerName)
                     .Name("routerName")
                     .HtmlAttributes(new { style = "width:210px" })
-                )
-            </div>
-            <div class="editor-label">@Html.DisplayNameFor(model => model.isp)</div>
-            <div class="editor-field">
-                @(Html.Kendo().DropDownListFor(model => model.isp)
-          .Name("isp")
-          .DataTextField("Text")
-          .DataValueField("Value")
-          .BindTo(new List<SelectListItem>() {
-              new SelectListItem() {
-                  Text = "No",
-                  Value = "1"
-              },
-              new SelectListItem() {
-                  Text = "Yes",
-                  Value = "2"
-              },
-          })
-          .Value("1")
-          .HtmlAttributes(new { style = "width: 210px" })
-                )
-            </div>
-                          <div class="editor-label">@Html.DisplayNameFor(model => model.ispPrimaryBandwidth)</div>
-                          <div class="editor-field">
-                              @(Html.Kendo().TextBoxFor(model => model.ispPrimaryBandwidth)
+                    )
+                </div>
+                <div class="editor-label">@Html.DisplayNameFor(model => model.isp)</div>
+                <div class="editor-field">
+                    @Html.CheckBoxFor(model => model.isp)
+                </div>
+                <div class="editor-label">@Html.DisplayNameFor(model => model.ispPrimaryBandwidth)</div>
+                <div class="editor-field">
+                    @(Html.Kendo().TextBoxFor(model => model.ispPrimaryBandwidth)
                     .Name("ispPrimaryBandwidth")
                     .HtmlAttributes(new { style = "width:210px" })
-                              )
-                          </div>
-                          <div class="editor-label">@Html.DisplayNameFor(model => model.ispBackupBandwidth)</div>
-                          <div class="editor-field">
-                              @(Html.Kendo().TextBoxFor(model => model.ispBackupBandwidth)
+                    )
+                </div>
+                <div class="editor-label">@Html.DisplayNameFor(model => model.ispBackupBandwidth)</div>
+                <div class="editor-field">
+                    @(Html.Kendo().TextBoxFor(model => model.ispBackupBandwidth)
                     .Name("ispBackupBandwidth")
                     .HtmlAttributes(new { style = "width:210px" })
-                              )
-                          </div>
-        </div>);
-        p.Add().Text("Manual Cost Input").Expanded(false)
-            .Content(@<div class="panel-div">
+                    )
+                </div>
+                <div class="editor-label">@Html.DisplayNameFor(model => model.satellite)</div>
+                <div class="editor-field">
+                    @(Html.Kendo().TextBoxFor(model => model.satellite)
+                    .Name("satellite")
+                    .HtmlAttributes(new { style = "width:210px" })
+                    )
+                </div>
+                <div class="editor-label">@Html.DisplayNameFor(model => model.satelliteBackupBandwidth)</div>
+                <div class="editor-field">
+                    @(Html.Kendo().TextBoxFor(model => model.satelliteBackupBandwidth)
+                    .Name("satelliteBackupBandwidth")
+                    .HtmlAttributes(new { style = "width:210px" })
+                    )
+                </div>
+                <div class="editor-label">@Html.DisplayNameFor(model => model.serviceNet1Id)</div>
+                <div class="editor-field">
+                    @(Html.Kendo().DropDownListFor(model => model.serviceNet1Id)
+                        .HtmlAttributes(new { style = "width:210px", id = "serviceNet1Id" })
+                        .DataTextField("name")
+                        .DataValueField("serviceNet1Id")
+                        .OptionLabel("Select a ServiceNet")
+                        .DataSource(source =>
+                        {
+                            source.Read(read =>
+                            {
+                                read.Action("ServiceNetList1", "CorporateConnect");
+                            })
+                            .ServerFiltering(true);
+                        })
+                        .AutoBind(false)
+                    )
+                </div>
+                <div class="editor-label">@Html.DisplayNameFor(model => model.serviceNet2Id)</div>
+                        <div class="editor-field">
+                            @(Html.Kendo().DropDownListFor(model => model.serviceNet2Id)
+                                .HtmlAttributes(new { style = "width:210px", id = "serviceNet2Id" })
+                                .DataTextField("name")
+                                .DataValueField("serviceNet2Id")
+                                .OptionLabel("Select a ServiceNet")
+                                .DataSource(source =>
+                                {
+                                    source.Read(read =>
+                                    {
+                                        read.Action("ServiceNetList2", "CorporateConnect");
+                                    });
+                                })
+                            )
+                 </div>
+                 <div class="editor-label">@Html.DisplayNameFor(model => model.serviceNet3Id)</div>
+                        <div class="editor-field">
+                            @(Html.Kendo().DropDownListFor(model => model.serviceNet3Id)
+                                .HtmlAttributes(new { style = "width:210px", id = "serviceNet3Id" })
+                                .DataTextField("name")
+                                .DataValueField("serviceNet3Id")
+                                .OptionLabel("Select a ServiceNet")
+                                .DataSource(source =>
+                                {
+                                    source.Read(read =>
+                                    {
+                                        read.Action("ServiceNetList3", "CorporateConnect");
+                                    });
+                                })
+                            )
+                 </div>
+                 <div class="editor-label">@Html.DisplayNameFor(model => model.sitaQuickStart)</div>
+                 <div class="editor-field">
+                    @Html.CheckBoxFor(model => model.sitaQuickStart)
+                  </div>
+            </div>);
+            p.Add().Text("Manual Cost Input").Expanded(false)
+                .Content(@<div class="panel-div">
                 <div class="editor-label">@Html.DisplayNameFor(model => model.ispOTC)</div>
                 <div class="editor-field">
                     @(Html.Kendo().NumericTextBoxFor(model => model.ispOTC)
@@ -135,9 +172,70 @@
                     .Culture((String)ViewData["Currency"])
                     )
                 </div>
+                <div class="editor-label">@Html.DisplayNameFor(model => model.serviceMngtOTC)</div>
+                <div class="editor-field">
+                    @(Html.Kendo().NumericTextBoxFor(model => model.serviceMngtOTC)
+                    .Name("serviceMngtOTC")
+                    .HtmlAttributes(new { style = "width:210px; text-align:right" })
+                    .Format("c")
+                    .Spinners(false)
+                    .Culture((String)ViewData["Currency"])
+                    )
+                </div>
+                <div class="editor-label">@Html.DisplayNameFor(model => model.serviceMngtMRC)</div>
+                <div class="editor-field">
+                    @(Html.Kendo().NumericTextBoxFor(model => model.serviceMngtMRC)
+                    .Name("serviceMngtMRC")
+                    .HtmlAttributes(new { style = "width:210px; text-align:right" })
+                    .Format("c")
+                    .Spinners(false)
+                    .Culture((String)ViewData["Currency"])
+                    )
+                </div>
+            </div>);
+            p.Add().Text("Discount").Expanded(false)
+                .Content(@<div class="panel-div">
+                      <div class="editor-label">@Html.DisplayNameFor(model => model.serviceMRPDiscountType)</div>
+                      <div class="editor-field">
+                          @(Html.Kendo().DropDownListFor(model => model.serviceMRPDiscountType)
+          .Name("serviceMRPDiscountType")
+          .DataTextField("Text")
+          .DataValueField("Value")
+          .BindTo(new List<SelectListItem>() {
+              new SelectListItem() {
+                  Text = "%",
+                  Value = "%"
+              },
+              new SelectListItem() {
+                  Text = "$",
+                  Value = "$"
+              },
+          })
+          .Value("%")
+          .HtmlAttributes(new { style = "width: 210px" })
+                          )
+                      </div>
+                      <div class="editor-label">@Html.DisplayNameFor(model => model.servcieMRPDiscountValue)</div>
+                      <div class="editor-field">
+                          @(Html.Kendo().TextBoxFor(model => model.servcieMRPDiscountValue)
+                    .Name("servcieMRPDiscountValue")
+                    .HtmlAttributes(new { style = "width:210px" })
+                          )
+                      </div>
+            </div>);
+            p.Add().Text("Other").Expanded(false)
+                .Content(@<div class="panel-div">
+                
             </div>);
         })
 
         )
     </div>
+    <div style="text-align:left; margin-top:4px;">
+        <button class="k-button" type="submit" id="EditConfig">
+            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit Quote
+        </button>
+    </div>
+    <div id="response"></div>
 }
+<script type="text/javascript" src="@Url.Content("~/Scripts/qm/qm.corporateconnect.form.js")"></script>

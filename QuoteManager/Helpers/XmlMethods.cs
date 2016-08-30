@@ -123,7 +123,7 @@ namespace QuoteManager.Helpers
                                     item.secondCosMRC = float.Parse((childNode.ChildNodes[1].InnerText));
                                     break;
                                 case "2nd COS OTC":
-                                    item.secondCosOTP = float.Parse((childNode.ChildNodes[1].InnerText));
+                                    item.secondCosOTC = float.Parse((childNode.ChildNodes[1].InnerText));
                                     break;
                                 case "total MRP":
                                     item.totalMRP = float.Parse((childNode.ChildNodes[1].InnerText));

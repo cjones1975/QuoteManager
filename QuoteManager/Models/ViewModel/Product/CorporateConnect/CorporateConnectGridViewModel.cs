@@ -14,7 +14,7 @@ namespace QuoteManager.Models.ViewModel.Product.CorporateConnect
         public int assignedProductId { get; set; }
         // OBS web service properties
         [Display(Name = "Site Name")]
-        public int siteId { get; set; }
+        public string siteId { get; set; }
          
         [Display(Name = "Country Code")]
         public string countryCode { get; set; }
@@ -25,6 +25,9 @@ namespace QuoteManager.Models.ViewModel.Product.CorporateConnect
         [Display(Name = "Bandwidth")]
         public string bandwidth { get; set; }
         // End OBS web service properties
+        [Display(Name = "Site Type")]
+        public int townAirportId { get; set; }
+
         public int assetId { get; set; }
 
         [Display(Name = "Location")]
@@ -45,11 +48,11 @@ namespace QuoteManager.Models.ViewModel.Product.CorporateConnect
         [Display(Name = "Access")]
         public bool access { get; set; }
 
-        [Display(Name = "Satelite")]
-        public string Satelite { get; set; }
+        [Display(Name = "Satellite")]
+        public string Satellite { get; set; }
 
-        [Display(Name = "Satelite Backup Bandwidth")]
-        public string sateliteBackupBandwidth { get; set; }
+        [Display(Name = "Satellite Backup Bandwidth")]
+        public string satelliteBackupBandwidth { get; set; }
 
         [Display(Name = "SITA AirBackup?")]
         public bool sitaAirBackup { get; set; }

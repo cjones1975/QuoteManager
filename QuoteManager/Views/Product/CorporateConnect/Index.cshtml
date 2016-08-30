@@ -27,11 +27,12 @@
                               @RenderGrid()
                                </div>);
                         horizontalPanes.Add()
-                            .HtmlAttributes(new { id = "right-pane" })
+                            .HtmlAttributes(new { style = "background-color: #F5F5F5", id = "right-pane" })
                             .Collapsible(true)
+                            .Scrollable(false)
                             .Size("240px")
                             .Content(@<div class="pane-content">
-                                @Html.Partial("Configure")
+                                @Html.Partial("Configure", new QuoteManager.Models.ViewModel.Product.CorporateConnect.CorporateConnectViewModel())
                             </div>);
                     }).ToHtmlString()
               );
@@ -40,7 +41,7 @@
 @helper RenderGrid()
 {
     @(Html.Kendo().Grid(Model)
-.Name("Grid")
+.Name("CorporateConnectGrid")
 .HtmlAttributes(new { style = "width:100%;height:400px" })
 .Columns(columns =>
 {
@@ -48,42 +49,44 @@
     columns.Bound(m => m.siteId).Width("100px").Locked(true).Lockable(true);
     columns.Bound(m => m.country).Width("120px").Locked(true).Lockable(true);
     columns.Bound(m => m.location).Width("100px");
-    columns.Bound(m => m.existingSite).Width("120px").Filterable(false);
+    columns.Bound(m => m.existingSite).ClientTemplate("<input type='checkbox' #= existingSite ? checked='checked':'' # class='chkbx' />").Width("110px");
     columns.Bound(m => m.bandwidth).Width("100px");
     columns.Bound(m => m.serviceDescription).Width("200px").Filterable(false);
     columns.Bound(m => m.routerName).Width("120px");
-    columns.Template(@<text></text>).ClientTemplate("<input type='checkbox' #= accessNotRequired ? checked='checked':'' # class='chkbx' />");
+    columns.Bound(m => m.isp).ClientTemplate("<input type='checkbox' #= isp ? checked='checked':'' # class='chkbx' />").Width("80px");
+    columns.Bound(m => m.accessNotRequired).ClientTemplate("<input type='checkbox' #= accessNotRequired ? checked='checked':'' # class='chkbx' />").Width("120px");
     columns.Bound(m => m.supplierCostFirm).Width("140px");
-    columns.Bound(m => m.quickConnectOTC).Width("130px").Filterable(false).Lockable(false).Sortable(false);
-    columns.Bound(m => m.quickConnectMRC).Width("140px").Filterable(false).Lockable(false).Sortable(false);
-    columns.Bound(m => m.serviceOTC).Width("100px").Filterable(false).Lockable(false).Sortable(false);
-    columns.Bound(m => m.serviceMRC).Width("100px").Filterable(false).Lockable(false).Sortable(false);
-    columns.Bound(m => m.ispOTC).Width("100px").Filterable(false).Lockable(false).Sortable(false);
-    columns.Bound(m => m.accessOTC).Width("100px").Filterable(false).Lockable(false).Sortable(false);
-    columns.Bound(m => m.accessMRC).Width("100px").Filterable(false).Lockable(false).Sortable(false);
-    columns.Bound(m => m.hardwareOTC).Width("120px").Filterable(false).Lockable(false).Sortable(false);
-    columns.Bound(m => m.hardwareMRC).Width("120px").Filterable(false).Lockable(false).Sortable(false);
-    columns.Bound(m => m.serviceMngtOTC).Width("140px").Filterable(false).Lockable(false).Sortable(false);
-    columns.Bound(m => m.serviceMngtMRC).Width("140px").Filterable(false).Lockable(false).Sortable(false);
-    columns.Bound(m => m.serviceOTP).Width("100px").Filterable(false).Lockable(false).Sortable(false);
-    columns.Bound(m => m.serviceOTPOverride).Width("150px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.quickConnectOTC).Width("130px").Filterable(false).Lockable(false).Sortable(false).Format("{0:c}"); ;
+    columns.Bound(m => m.quickConnectMRC).Width("140px").Filterable(false).Lockable(false).Sortable(false).Format("{0:c}"); ;
+    columns.Bound(m => m.serviceOTC).Width("100px").Filterable(false).Lockable(false).Sortable(false).Format("{0:c}");
+    columns.Bound(m => m.serviceMRC).Width("100px").Filterable(false).Lockable(false).Sortable(false).Format("{0:c}"); ;
+    columns.Bound(m => m.ispOTC).Width("100px").Filterable(false).Lockable(false).Sortable(false).Format("{0:c}"); ;
+    columns.Bound(m => m.ispMRC).Width("100px").Filterable(false).Lockable(false).Sortable(false).Format("{0:c}"); ;
+    columns.Bound(m => m.accessOTC).Width("100px").Filterable(false).Lockable(false).Sortable(false).Format("{0:c}"); ;
+    columns.Bound(m => m.accessMRC).Width("100px").Filterable(false).Lockable(false).Sortable(false).Format("{0:c}"); ;
+    columns.Bound(m => m.hardwareOTC).Width("120px").Filterable(false).Lockable(false).Sortable(false).Format("{0:c}"); ;
+    columns.Bound(m => m.hardwareMRC).Width("120px").Filterable(false).Lockable(false).Sortable(false).Format("{0:c}"); ;
+    columns.Bound(m => m.serviceMngtOTC).Width("140px").Filterable(false).Lockable(false).Sortable(false).Format("{0:c}"); ;
+    columns.Bound(m => m.serviceMngtMRC).Width("140px").Filterable(false).Lockable(false).Sortable(false).Format("{0:c}"); ;
+    columns.Bound(m => m.serviceOTP).Width("100px").Filterable(false).Lockable(false).Sortable(false).Format("{0:c}"); ;
+    //columns.Bound(m => m.serviceOTPOverride).Width("150px").Filterable(false).Lockable(false).Sortable(false);
     columns.Bound(m => m.serviceOTPOverrideValue).Width("180px").Filterable(false).Lockable(false).Sortable(false);
-    columns.Bound(m => m.serviceMRP).Width("100px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.serviceMRP).Width("100px").Filterable(false).Lockable(false).Sortable(false).Format("{0:c}"); ;
     columns.Bound(m => m.serviceMRPDiscount).Width("150px").Filterable(false).Lockable(false).Sortable(false);
     columns.Bound(m => m.serviceMRPDiscountType).Width("180px").Filterable(false).Lockable(false).Sortable(false);
-    columns.Bound(m => m.serviceMRPOverride).Width("150px").Filterable(false).Lockable(false).Sortable(false);
+    //columns.Bound(m => m.serviceMRPOverride).Width("150px").Filterable(false).Lockable(false).Sortable(false);
     columns.Bound(m => m.serviceMRPOverrideValue).Width("180px").Filterable(false).Lockable(false).Sortable(false);
-    columns.Bound(m => m.quickConnectMRP).Width("140px").Filterable(false).Lockable(false).Sortable(false);
-    columns.Bound(m => m.quickConnectMRPOverride).Width("190px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.quickConnectMRP).Width("140px").Filterable(false).Lockable(false).Sortable(false).Format("{0:c}"); ;
+    //columns.Bound(m => m.quickConnectMRPOverride).Width("190px").Filterable(false).Lockable(false).Sortable(false);
     columns.Bound(m => m.quickConnectMRPOverrideValue).Width("210px").Filterable(false).Lockable(false).Sortable(false);
-    columns.Bound(m => m.disconnectionOTP).Width("140px").Filterable(false).Lockable(false).Sortable(false);
-    columns.Bound(m => m.disconnectionOTPOverride).Width("180px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.disconnectionOTP).Width("140px").Filterable(false).Lockable(false).Sortable(false).Format("{0:c}"); ;
+    //columns.Bound(m => m.disconnectionOTPOverride).Width("180px").Filterable(false).Lockable(false).Sortable(false);
     columns.Bound(m => m.disconnectionOverrideValue).Width("180px").Filterable(false).Lockable(false).Sortable(false);
     columns.Bound(m => m.committedDuration).Width("140px").Filterable(false).Lockable(false).Sortable(false);
-    columns.Bound(m => m.billable).Width("100px").Filterable(false).Lockable(false).Sortable(false);
-    columns.Bound(m => m.grossMargin).Width("120px").Filterable(false).Lockable(false).Sortable(false);
-    columns.Bound(m => m.netMargin).Width("120px").Filterable(false).Lockable(false).Sortable(false);
-    columns.Bound(m => m.includeInTotals).Width("120px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.billable).ClientTemplate("<input type='checkbox' #= billable ? checked='checked':'' # class='chkbx' />").Width("120px");
+    //columns.Bound(m => m.grossMargin).Width("120px").Filterable(false).Lockable(false).Sortable(false);
+    //columns.Bound(m => m.netMargin).Width("120px").Filterable(false).Lockable(false).Sortable(false);
+    columns.Bound(m => m.includeInTotals).ClientTemplate("<input type='checkbox' #= includeInTotals ? checked='checked':'' # class='chkbx' />").Width("120px");
 
 })
 .ToolBar(toolbar =>
@@ -94,13 +97,15 @@
         toolbar.Template(@<text>
         @(Html.Kendo().Button()
             .Name("WebServiceCall")
-            .HtmlAttributes(new { type = "button", onclick = "importData()", style = "text-align:right" })
+            .HtmlAttributes(new { type = "button", onclick = "importOBSData()", style = "text-align:right" })
             .Content("Call Pricing Portal Configuration"))
-        @(Html.Kendo().NumericTextBox()
-            .Name("ScenarioId")
-            .Value(75827))
+        @(Html.Kendo().TextBox()
+                    .Name("ScenarioId")
+                    .Value("75827")
+                    .HtmlAttributes(new { style = "width:150px" })
+        )
         </text>);
-        
+
     }
 })
 .Sortable()
@@ -116,7 +121,7 @@
 .Resizable(resize => resize.Columns(true))
 .Filterable()
 .ColumnMenu()
-//.Events(events => events.Change("onChange").DataBound("onDataBound"))
+.Events(events => events.Change("onChange").DataBound("onDataBound"))
 .DataSource(dataSource => dataSource
     .Ajax()
     .Batch(false)

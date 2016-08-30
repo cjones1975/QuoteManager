@@ -29,7 +29,7 @@ namespace QuoteManager.Models.ViewModel.Product
             public float cosMRC { get; set; }
             public float cosOTC { get; set; }
             public float secondCosMRC { get; set; }
-            public float secondCosOTP { get; set; }
+            public float secondCosOTC { get; set; }
             public float totalMRP { get; set; }
             public float totalOTP { get; set; }
             public float samBrickMRP { get; set; }
